@@ -59,28 +59,32 @@ export const runPgn = async (pgn, blackName, whiteName, blackIcon, whiteIcon, ct
 
     // Handle navigation buttons
     composer.callbackQuery(/jump_(\d+)/, async (callbackCtx) => {
-        const requestedIndex = parseInt(callbackCtx.match[1], 10);
-
-        if (requestedIndex < 0 || requestedIndex >= moves.length) {
-            await callbackCtx.answerCallbackQuery("Invalid move");
-            return;
-        }
-
-        const moveKey = moves[requestedIndex];
-        const media = new InputFile(imagesObject[moveKey].buffer_img)
-
-        await callbackCtx.editMessageMedia(
-            {
-                type: "photo",
-                media: media,
-                caption: imagesObject[moveKey].caption,
-                parse_mode: "HTML"
-            },
-            {
-                reply_markup: createKeyboard(requestedIndex),
+        try {
+            const requestedIndex = parseInt(callbackCtx.match[1], 10);
+    
+            if (requestedIndex < 0 || requestedIndex >= moves.length) {
+                await callbackCtx.answerCallbackQuery("Invalid move");
+                return;
             }
-        );
-        await callbackCtx.answerCallbackQuery(); // Acknowledge the callback
+    
+            const moveKey = moves[requestedIndex];
+            const media = new InputFile(imagesObject[moveKey].buffer_img)
+    
+            await callbackCtx.editMessageMedia(
+                {
+                    type: "photo",
+                    media: media,
+                    caption: imagesObject[moveKey].caption,
+                    parse_mode: "HTML"
+                },
+                {
+                    reply_markup: createKeyboard(requestedIndex),
+                }
+            );
+            await callbackCtx.answerCallbackQuery(); // Acknowledge the callback
+        } catch (error) {
+            console.log(error.message);            
+        }
     });
 }
 
