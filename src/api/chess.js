@@ -41,9 +41,18 @@ class Chess {
       .data;
   }
 
+  async getCallbackProfile(gameUserName) {
+    try {
+      return (await axios.get(`https://www.chess.com/callback/user/popup/${gameUserName}`))
+        .data;
+    } catch (error) {
+      return null;
+    }
+  }
+
   async getBio(gameUserName) {
     try {
-      return (await axios.get(`https://api.chess.com/v1/users/flair-status?username=${gameUserName}`)).data.data.status;
+      return (await axios.get(`https://api.chess.com/v1/users/flair-status?username=${gameUserName}&signed=Android4.6.38`)).data.data.status;
     } catch (error) {
       return null;
     }

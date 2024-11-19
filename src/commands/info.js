@@ -7,27 +7,31 @@ import Chess from "../api/chess.js";
 const composer = new Composer();
 
 const getReplyMsg = async (userDetail) => {
-    const avatar = userDetail.avatar || config.DEFAULT_ICON;
-    const bio = await Chess.getBio(userDetail.gameUserName);
+    const avatar = userDetail.userDetail.avatar || config.DEFAULT_ICON;
+    const bio = await Chess.getBio(userDetail.userDetail.username);
 
-    const message = `${randomise([
+    const preMessage = `${randomise([
         "🏆 Profile found! Looks like you’ve been playing a queen’s gambit all along.",
         "♕ Your profile is here, ready to dominate the board. Here's your chess journey so far"
-    ])}: [‎ ](${avatar})
-*Username*: ${userDetail.username}
-${userDetail.name ? `*Name*: ${userDetail.name}` : ""}
-*Player ID*: ${userDetail.player_id}
-${userDetail.title ? `*Title*: ${userDetail.title}` : ""}
-${userDetail.status ? `*Status*: ${userDetail.status}` : ""}
-${bio ? `*Bio*: ${bio}` : ""}
-*Joined*: ${new Date(userDetail.joined * 1000).toDateString()}
-*Country*: ${await Chess.getFlagEmoji(userDetail.country)}
-*Last seen*: ${new Date(userDetail.last_online * 1000).toDateString()}
-*Friends*: ${userDetail.followers}
-*is Streamer ?*: ${userDetail.is_streamer ? "Yes" : "No"}
+    ])}: <a href="${avatar}">‎</a>`;
+
+    const message = `
+<b>Username</b>: ${userDetail.userDetail.username}
+${userDetail.userDetail.name ? `<b>Name</b>: ${userDetail.userDetail.name}` : ""}
+<b>Player ID</b>: ${userDetail.userDetail.player_id}
+${userDetail.userDetail.title ? `<b>Title</b>: ${userDetail.userDetail.title}` : ""}
+${userDetail.userDetail.status ? `<b>Status</b>: ${userDetail.userDetail.status}` : ""}
+${bio ? `<b>Bio</b>: ${bio}` : ""}
+<b>Joined</b>: ${new Date(userDetail.userDetail.joined * 1000).toDateString()}
+<b>Country</b>: ${await Chess.getFlagEmoji(userDetail.userDetail.country)}
+<b>Last seen</b>: ${userDetail.cbUserDetail.lastLoginDate}
+<b>Online Status</b>: ${userDetail.cbUserDetail.onlineStatus}
+<b>${userDetail.cbUserDetail.bestRatingType}</b>: ${userDetail.cbUserDetail.bestRating.toString()}
+<b>Friends</b>: ${userDetail.userDetail.followers}
+<b>is Streamer ?</b>: ${userDetail.userDetail.is_streamer ? "Yes" : "No"}
     `.trim();
 
-    return message
+    return preMessage + '\n\n' + message
         .split('\n')
         .filter(line => line.trim() !== '')
         .join('\n')
@@ -51,11 +55,12 @@ composer.command("myinfo", asyncHandler(async (ctx) => {
     }
 
     const userDetail = await Chess.getProfile(user.gameUserName);
+    const cbUserDetail = await Chess.getCallbackProfile(user.gameUserName);
 
-    const replyMsg = await getReplyMsg(userDetail);
+    const replyMsg = await getReplyMsg({ userDetail, cbUserDetail });
 
     await ctx.editMessageText(replyMsg, {
-        parse_mode: "Markdown",
+        parse_mode: "HTML",
         disable_web_page_preview: false,
         message_id: fetching.message_id,
     });
@@ -97,13 +102,14 @@ composer.command("inspect", asyncHandler(async (ctx) => {
 
     // Fetch the profile details using the game username
     const userDetail = await Chess.getProfile(gameUserName);
+    const cbUserDetail = await Chess.getCallbackProfile(gameUserName);
 
     // Prepare a detailed reply message about the user's chess profile
-    const replyMsg = await getReplyMsg(userDetail);
+    const replyMsg = await getReplyMsg({ userDetail, cbUserDetail });
 
     // Update the message with the fetched profile information
     await ctx.editMessageText(replyMsg, {
-        parse_mode: "Markdown",
+        parse_mode: "HTML",
         disable_web_page_preview: false,
         message_id: fetching.message_id,
     });
