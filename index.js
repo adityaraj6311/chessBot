@@ -1,4 +1,4 @@
-import { Bot } from "npm:grammy";
+import { Bot } from "grammy";
 import Commands from "./src/index.js"
 import config from "./config.js";
 
@@ -21,10 +21,13 @@ bot.use(async (ctx, next) => {
 });
 
 
-const main = () => {
+const run = async () => {
   bot.start()
-  console.log("Bot is running!");
+  await bot.init();
+  const botUsername = bot.botInfo.username;
+  console.log(`${botUsername} is running!`);
 }
 
-main();
-// deno run --allow-net --allow-env --allow-read --allow-sys index.js  
+run();
+
+// export default webhookCallback(bot, "std/http");

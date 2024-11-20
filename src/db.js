@@ -1,4 +1,4 @@
-import { MongoClient } from "npm:mongodb";
+import { MongoClient } from "mongodb";
 import config from "../config.js";
 
 if (!config.MONGO_URI) {
@@ -9,7 +9,7 @@ if (!config.MONGO_URI) {
 let client;
 try {
   client = new MongoClient(config.MONGO_URI); // Use URI directly
-  console.log("\nMONGODB CONNECTED 🌐");
+  console.log("MONGODB CONNECTED 🌐");
 } catch (error) {
   console.error("MONGODB CONNECTION FAILED:", error.message);
   Deno.exit(1);

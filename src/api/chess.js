@@ -1,4 +1,4 @@
-import axios from "npm:axios@1.7.7";
+import axios from "axios";
 import { Config } from "../db.js";
 import getAccessToken from "./accessToken.js";
 

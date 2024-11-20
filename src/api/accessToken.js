@@ -1,4 +1,4 @@
-import axios from "npm:axios@1.7.7";
+import axios from "axios";
 
 export default async () => {
   const headers = {

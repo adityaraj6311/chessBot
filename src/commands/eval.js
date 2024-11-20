@@ -1,6 +1,6 @@
-import { Composer } from "npm:grammy";
-import { exec } from 'jsr:@elsoul/child-process'
-import { autoQuote } from "npm:@roziscoding/grammy-autoquote";
+import { Composer } from "grammy";
+import { exec } from 'child_process'
+import { autoQuote } from "@roziscoding/grammy-autoquote";
 
 // Replace with your bot token
 const composer = new Composer();

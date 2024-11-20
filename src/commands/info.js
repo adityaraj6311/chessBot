@@ -1,4 +1,4 @@
-import { Composer } from "npm:grammy";
+import { Composer } from "grammy";
 import { User } from "../db.js";
 import { asyncHandler, randomise } from "../utils/index.js";
 import config from "../../config.js"

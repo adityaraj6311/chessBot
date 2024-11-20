@@ -1,11 +1,13 @@
-import { Composer, InlineKeyboard, InputFile } from "npm:grammy";
+import { Composer, InlineKeyboard, InputFile } from "grammy";
 import { pgnToImages, asyncHandler, loader } from "../utils/index.js";
 
 const composer = new Composer();
 
-export const runPgn = async (pgn, blackName, whiteName, blackIcon, whiteIcon, ctx, generating, text) => {
+const pgnImages = {};
 
-    const imagesObject = await pgnToImages(pgn, blackName, whiteName, blackIcon, whiteIcon, (process) => {
+export const runPgn = async (pgn, blackName, whiteName, blackIcon, whiteIcon, ctx, generating, text = "♟️") => {
+
+    pgnImages[ctx.message.from.id] = await pgnToImages(pgn, blackName, whiteName, blackIcon, whiteIcon, (process) => {
         ctx.api.editMessageCaption(generating.chat.id,
             generating.message_id,
             {
@@ -15,6 +17,7 @@ export const runPgn = async (pgn, blackName, whiteName, blackIcon, whiteIcon, ct
         );
     });
 
+    const imagesObject = pgnImages[ctx.message.from.id];
     if (imagesObject === "INVALID_MOVE") {
         return await ctx.api.editMessageMedia(
             generating.chat.id,
@@ -61,15 +64,15 @@ export const runPgn = async (pgn, blackName, whiteName, blackIcon, whiteIcon, ct
     composer.callbackQuery(/jump_(\d+)/, async (callbackCtx) => {
         try {
             const requestedIndex = parseInt(callbackCtx.match[1], 10);
-    
+
             if (requestedIndex < 0 || requestedIndex >= moves.length) {
                 await callbackCtx.answerCallbackQuery("Invalid move");
                 return;
             }
-    
+
             const moveKey = moves[requestedIndex];
             const media = new InputFile(imagesObject[moveKey].buffer_img)
-    
+
             await callbackCtx.editMessageMedia(
                 {
                     type: "photo",
@@ -83,7 +86,7 @@ export const runPgn = async (pgn, blackName, whiteName, blackIcon, whiteIcon, ct
             );
             await callbackCtx.answerCallbackQuery(); // Acknowledge the callback
         } catch (error) {
-            console.log(error.message);            
+            console.log(error.message);
         }
     });
 }

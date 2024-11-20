@@ -31,7 +31,7 @@ export default () => {
             text: "Every piece has its role, but only a true commander knows how to orchestrate their symphony. Shall we dance to my victory?"
         },
         {
-            gif: "https://tenor.com/view/let-us-play-some-chess-dexter-dexter's-laboratory-let's-have-a-game-of-chess-let's-have-a-chess-match-gif-2068937381390540011",
+            gif: "https://media1.tenor.com/m/HLZXljBPXOsAAAAd/let-us-play-some-chess-dexter.gif",
             text: "Science is the ultimate strategy! My calculations are flawless—checkmate is merely a formality."
         },
         {   

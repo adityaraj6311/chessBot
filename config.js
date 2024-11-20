@@ -1,4 +1,4 @@
-import "https://deno.land/std@0.204.0/dotenv/load.ts";
+import "dotenv/config";
 
 export default {
     BOT_TOKEN: "7637053751:AAGpZuHVSs5NKnUIASlvMyXQuIHxvY7ZOFQ",

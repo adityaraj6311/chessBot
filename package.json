@@ -1,0 +1,42 @@
+{
+  "name": "chessbot",
+  "version": "1.0.0",
+  "description": ".env file",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Awesome-Tofu/chessBot.git"
+  },
+  "keywords": [
+    "Chess.com",
+    "Chess",
+    "chess-bot",
+    "pgn-to-image"
+  ],
+  "author": "Aditya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Awesome-Tofu/chessBot/issues"
+  },
+  "homepage": "https://github.com/Awesome-Tofu/chessBot#readme",
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.62",
+    "@roziscoding/grammy-autoquote": "^2.0.8",
+    "axios": "^1.7.7",
+    "chess-image-generator": "^1.0.9",
+    "chess.js": "^1.0.0-beta.8",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "grammy": "^1.32.0",
+    "mongodb": "^6.10.0"
+  }
+}

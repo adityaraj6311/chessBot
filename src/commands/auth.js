@@ -1,4 +1,4 @@
-import { Composer } from "npm:grammy";
+import { Composer } from "grammy";
 import { User } from "../db.js";
 import { asyncHandler, randomise } from "../utils/index.js";
 import Chess from "../api/chess.js";
@@ -26,7 +26,7 @@ composer.command(
       return await ctx.editMessageText(
         randomise([
           "🤔 What's your opening gambit? I need your username to make the first move!\n\nExample:\n<pre><code>/login eternaltofu</code></pre>",
-          "📛 A chess player without a username? Impossible! Drop it like a pawn to \n<pre><code>/login yourUsername.</pre></code>"
+          "📛 A chess player without a username? Impossible! Drop it like a pawn to \n<pre><code>/login yourUsername.</code></pre>"
         ]), { message_id: logging.message_id, parse_mode: "HTML" }
       );
     }

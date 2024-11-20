@@ -1,3 +1,4 @@
 .env
-deno.lock
 /test
+/node_modules
+package-lock.json
