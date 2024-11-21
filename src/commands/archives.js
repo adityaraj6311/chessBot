@@ -3,7 +3,6 @@ import Chess from "../api/chess.js";
 import { User } from "../db.js";
 import { randomise, asyncHandler, fenToImage, getWinDetails } from "../utils/index.js";
 import config from "../../config.js";
-import fs from 'fs';
 import { runPgn } from "./pgn.js";
 
 const composer = new Composer();
@@ -183,8 +182,6 @@ composer.callbackQuery(/^pgn_(\w+)_(\d{2})_(\d{4})_(\d+)$/i, asyncHandler(async 
             by: getWinDetail.by,
         }
     )
-
-    fs.writeFileSync("tes.png", gamePreviewImage);
 
     const inlineKeyboard = new InlineKeyboard()
         .text("♟️ View Full Game", `run_pgn_${gameUserName}_${month}_${year}_${gameID}`);
