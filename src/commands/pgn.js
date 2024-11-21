@@ -7,7 +7,7 @@ const pgnImages = {};
 
 export const runPgn = async (pgn, blackName, whiteName, blackIcon, whiteIcon, ctx, generating, text = "♟️") => {
 
-    pgnImages[ctx.message.from.id] = await pgnToImages(pgn, blackName, whiteName, blackIcon, whiteIcon, (process) => {
+    pgnImages[ctx.message?.from?.id || ctx.callbackQuery.from.id] = await pgnToImages(pgn, blackName, whiteName, blackIcon, whiteIcon, (process) => {
         ctx.api.editMessageCaption(generating.chat.id,
             generating.message_id,
             {
