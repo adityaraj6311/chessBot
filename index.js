@@ -1,8 +1,11 @@
-import { Bot } from "grammy";
-import Commands from "./src/index.js"
+import { Bot, webhookCallback } from "grammy";
+import Commands from "./src/index.js";
 import config from "./config.js";
+import express from "express";
 
 const bot = new Bot(config.BOT_TOKEN);
+await bot.init();
+const botUsername = bot.botInfo.username;
 
 bot.use(Commands);
 
@@ -13,21 +16,27 @@ bot.use(async (ctx, next) => {
   const messageTime = ctx.message?.date;
 
   if (currentTime - messageTime > 60) {
-    logger.info({ from: ctx.from, chat: ctx.chat }, "Ignoring old message");
+    console.log("Ignoring old message", { from: ctx.from, chat: ctx.chat });
     return;
   }
 
   await next();
 });
 
+// Initialize Express for webhook handling
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-const run = async () => {
-  bot.start()
-  await bot.init();
-  const botUsername = bot.botInfo.username;
-  console.log(`${botUsername} is running!`);
-}
+// Middleware for handling JSON
+app.use(express.json());
 
-run();
+app.get("/", (req, res) => {
+  res.send(`${botUsername} is running!`);
+})
+// Set up the webhook endpoint
+app.use("/webhook", webhookCallback(bot, "express"));
 
-// export default webhookCallback(bot, "std/http");
+// Start the Express server
+app.listen(PORT, async () => {
+  console.log(`${botUsername} is ready and listening for webhooks!`);
+});
